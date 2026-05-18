@@ -23,7 +23,7 @@ export default function Login() {
     <main className="grid min-h-screen bg-background lg:grid-cols-2">
       <section className="relative flex items-center justify-center px-6 py-12 sm:px-10">
         <div className="absolute left-10 top-6 z-20 sm:left-10 sm:top-10">
-          <div className="flex h-16 w-16 items-center justify-center rounded-3xl bg-linear-to-br from-zinc-100 via-white to-zinc-200 p-2 shadow-lg shadow-black/10 ring-1 ring-black/5 backdrop-blur-sm dark:from-zinc-900 dark:via-zinc-950 dark:to-zinc-800 dark:shadow-black/30 dark:ring-white/10">
+          <div className="flex h-16 w-16 items-center justify-center rounded-3xl p-2">
             <Image
               src="/logo-semfundo.png"
               alt="Meu Plantao"
@@ -39,7 +39,7 @@ export default function Login() {
           <ModeToggle />
         </div>
 
-        <div className="w-full max-w-xl rounded-none border border-transparent bg-card/95 p-10 shadow-2xl shadow-black/10 backdrop-blur-sm sm:p-12 dark:border-white/10 dark:bg-white/5 dark:shadow-black/30 dark:backdrop-blur-xl">
+        <div className="w-full max-w-xl rounded-none p-10">
           <div className="mb-8 text-center">
             <h1 className="mt-2 text-3xl font-semibold tracking-tight">
               Faça Seu Login
