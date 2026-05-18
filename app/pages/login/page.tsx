@@ -8,8 +8,17 @@ import { ModeToggle } from "@/components/mode-toggle";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faLock, faRightToBracket } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import type { FormEvent } from "react";
 
 export default function Login() {
+  const router = useRouter();
+
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    router.push('/pages/dashboard');
+  }
+
   return (
     <main className="grid min-h-screen bg-background lg:grid-cols-2">
       <section className="relative flex items-center justify-center px-6 py-12 sm:px-10">
@@ -32,9 +41,6 @@ export default function Login() {
 
         <div className="w-full max-w-xl rounded-none border border-transparent bg-card/95 p-10 shadow-2xl shadow-black/10 backdrop-blur-sm sm:p-12 dark:border-white/10 dark:bg-white/5 dark:shadow-black/30 dark:backdrop-blur-xl">
           <div className="mb-8 text-center">
-            <p className="text-sm font-medium uppercase text-muted-foreground">
-              Meu Plantao Admin
-            </p>
             <h1 className="mt-2 text-3xl font-semibold tracking-tight">
               Faça Seu Login
             </h1>
@@ -43,7 +49,7 @@ export default function Login() {
             </p>
           </div>
 
-          <form className="space-y-8">
+          <form onSubmit={handleSubmit} className="space-y-8">
             <div className="space-y-2">
               <label htmlFor="fieldgroup-email" className="flex items-center gap-2 text-sm font-medium text-foreground">
                 <FontAwesomeIcon icon={faEnvelope} className="h-4 w-4 text-black dark:text-white" />
