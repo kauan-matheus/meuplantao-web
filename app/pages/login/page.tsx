@@ -30,7 +30,7 @@ export default function Login() {
               width={72}
               height={72}
               priority
-              className="h-auto w-full object-contain drop-shadow-[0_8px_20px_rgba(0,0,0,0.12)]"
+              className="h-auto w-full object-contain"
             />
           </div>
         </div>

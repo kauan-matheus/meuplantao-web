@@ -22,7 +22,7 @@ const navItems = [
 
 export default function Sidebar() {
     return (
-        <aside className="flex h-screen w-72 flex-col border-r border-white/10 bg-black text-white">
+        <aside className="fixed inset-y-0 left-0 z-40 hidden h-screen w-72 flex-col border-r border-white/10 bg-black text-white md:flex">
             <div className="flex items-center gap-3 border-b border-white/10 px-6 py-6">
                 <div className="flex h-12 w-12 items-center justify-center rounded-none bg-white p-2">
                     <Image
@@ -35,7 +35,7 @@ export default function Sidebar() {
                     />
                 </div>
                 <div>
-                    <p className="text-xs uppercase text-white/60">Meu Plantão</p>
+                    <p className="text-xs font-medium text-white/60">Meu Plantão</p>
                     <h1 className="text-lg font-semibold text-white">Painel Admin</h1>
                 </div>
             </div>
@@ -63,7 +63,7 @@ export default function Sidebar() {
                         MP
                     </div>
                     <div className="flex min-w-0 flex-col">
-                        <span className="text-[0.65rem] uppercase text-white/50">
+                        <span className="text-[0.65rem] font-medium text-white/50">
                             Conta
                         </span>
                         <span className="truncate text-sm font-medium">meuplantao@ad...</span>
