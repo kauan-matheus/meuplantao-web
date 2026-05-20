@@ -1,3 +1,5 @@
+'use client';
+
 import Sidebar from "@/components/sidebar/sidebar";
 import Particles from "@/components/ui/particles";
 import ResumoPlantoes from "@/components/resumo-plantoes/page";
