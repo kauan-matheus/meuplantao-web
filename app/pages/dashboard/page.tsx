@@ -2,7 +2,7 @@
 
 import Sidebar from "@/components/sidebar/sidebar";
 import Particles from "@/components/ui/particles";
-import ResumoPlantoes from "@/components/resumo-plantoes/page";
+import ResumoPlantoes from "@/components/dashboard/page";
 
 export default function Dashboard() {
   return (

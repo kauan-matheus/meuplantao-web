@@ -12,6 +12,8 @@ import {
     faArrowRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
 
+import { ModeToggle } from "@/components/mode-toggle";
+
 const navItems = [
     { label: "Dashboard", href: "/pages/dashboard", icon: faChartLine, active: true },
     { label: "Plantões", href: "/pages/dashboard", icon: faCalendarDays },
@@ -23,20 +25,28 @@ const navItems = [
 export default function Sidebar() {
     return (
         <aside className="fixed inset-y-0 left-0 z-40 hidden h-screen w-72 flex-col border-r border-white/10 bg-black text-white md:flex">
-            <div className="flex items-center gap-3 border-b border-white/10 px-6 py-6">
-                <div className="flex h-12 w-12 items-center justify-center rounded-none bg-white p-2">
-                    <Image
-                        src="/logo-semfundo.png"
-                        alt="Meu Plantao"
-                        width={48}
-                        height={48}
-                        priority
-                        className="h-auto w-full object-contain"
-                    />
-                </div>
-                <div>
-                    <p className="text-xs font-medium text-white/60">Meu Plantão</p>
-                    <h1 className="text-lg font-semibold text-white">Painel Admin</h1>
+            <div className="border-b border-white/10 px-6 py-6">
+                <div className="flex items-center gap-4">
+                    <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-none border border-white/15 bg-white p-2 shadow-[0_10px_30px_-18px_rgba(255,255,255,0.45)]">
+                        <Image
+                            src="/logo-semfundo.png"
+                            alt="Meu Plantao"
+                            width={48}
+                            height={48}
+                            priority
+                            className="h-auto w-full object-contain"
+                        />
+                    </div>
+
+                    <div className="min-w-0 flex-1">
+                        <p className="text-xs font-medium text-white/55">Meu Plantão</p>
+                        <h1 className="mt-1 text-xl font-semibold leading-tight text-white">
+                            Painel Admin
+                        </h1>
+                        <p className="mt-1 text-sm leading-5 text-white/60">
+                            Gestão operacional
+                        </p>
+                    </div>
                 </div>
             </div>
 
@@ -69,10 +79,15 @@ export default function Sidebar() {
                         <span className="truncate text-sm font-medium">meuplantao@ad...</span>
                     </div>
                 </div>
-                <button className="flex w-full items-center justify-between rounded-none border border-white/20 px-4 py-3 text-sm font-medium text-white transition hover:bg-white hover:text-black">
-                    <span>Sair</span>
-                    <FontAwesomeIcon icon={faArrowRightFromBracket} className="h-4 w-4" />
-                </button>
+                <div className="flex items-center gap-3">
+                    <button className="flex flex-1 items-center justify-between rounded-none border border-white/20 px-4 py-3 text-sm font-medium text-white transition hover:bg-white hover:text-black">
+                        <span>Sair</span>
+                        <FontAwesomeIcon icon={faArrowRightFromBracket} className="h-4 w-4" />
+                    </button>
+                    <ModeToggle
+                        className="h-11.5 w-11 rounded-none border border-white/20 bg-white/10 text-white shadow-none transition-colors hover:bg-white hover:text-black dark:bg-white/10 dark:hover:bg-white"
+                    />
+                </div>
             </div>
         </aside>
     );
