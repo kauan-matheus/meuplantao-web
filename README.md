@@ -186,8 +186,6 @@ https://meuplantao-web.vercel.app/
 - A Vercel compila o projeto Next.js automaticamente
 - A mesma aplicação pode ser usada para preview e produção
 
-> Se você quiser, pode substituir o link acima pelo endereço real do deploy para deixar o README pronto para apresentação.
-
 ---
 
 ## 📌 Telas do sistema
