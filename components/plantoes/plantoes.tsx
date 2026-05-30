@@ -2,7 +2,13 @@
 
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleCheck, faCircleXmark, faTriangleExclamation, faXmark } from "@fortawesome/free-solid-svg-icons";
+import {
+    faCalendarCheck,
+    faCircleCheck,
+    faCircleXmark,
+    faTriangleExclamation,
+    faXmark,
+} from "@fortawesome/free-solid-svg-icons";
 
 import Sidebar from "@/components/sidebar/sidebar";
 import Particles from "@/components/ui/particles";
@@ -201,6 +207,10 @@ export default function Plantoes() {
 
             <main className="relative z-10 px-4 py-10 sm:px-6 lg:px-8">
                 <div className="max-w-3xl space-y-3">
+                    <div className="inline-flex items-center gap-2 border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-600 dark:border-white/10 dark:bg-slate-950 dark:text-slate-300">
+                        <FontAwesomeIcon icon={faCalendarCheck} className="h-3.5 w-3.5" />
+                        Gestão de plantões
+                    </div>
                     <h1 className="text-3xl font-semibold text-slate-950 dark:text-slate-50 sm:text-4xl">
                         Aprove, recuse e gerencie plantões.
                     </h1>
