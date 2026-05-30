@@ -14,17 +14,44 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import { ModeToggle } from "@/components/mode-toggle";
+import { useLanguage } from "@/components/language-provider";
 
 const navItems = [
     { label: "Dashboard", href: "/pages/dashboard", icon: faChartLine },
     { label: "Plantões", href: "/pages/plantoes", icon: faCalendarDays },
     { label: "Equipe", href: "/pages/equipe", icon: faUserDoctor },
     { label: "Relatórios", href: "/pages/relatorios", icon: faClipboardList },
-    { label: "Configurações", href: "/pages/dashboard", icon: faGear },
+    { label: "Configurações", href: "/pages/configuracoes", icon: faGear },
 ];
 
 export default function Sidebar() {
     const pathname = usePathname();
+    const { language } = useLanguage();
+
+    const labels =
+        language === "en"
+            ? {
+                  dashboard: "Dashboard",
+                  shifts: "Shifts",
+                  team: "Team",
+                  reports: "Reports",
+                  settings: "Settings",
+                  account: "Account",
+                  signOut: "Sign out",
+                  panel: "Admin Panel",
+                  operations: "Operational management",
+              }
+            : {
+                  dashboard: "Dashboard",
+                  shifts: "Plantões",
+                  team: "Equipe",
+                  reports: "Relatórios",
+                  settings: "Configurações",
+                  account: "Conta",
+                  signOut: "Sair",
+                  panel: "Painel Admin",
+                  operations: "Gestão operacional",
+              };
 
     return (
         <aside className="fixed inset-y-0 left-0 z-40 hidden h-screen w-72 flex-col border-r border-white/10 bg-black text-white md:flex">
@@ -44,10 +71,10 @@ export default function Sidebar() {
                     <div className="min-w-0 flex-1">
                         <p className="text-xs font-medium text-white/55">Meu Plantão</p>
                         <h1 className="mt-1 text-xl font-semibold leading-tight text-white">
-                            Painel Admin
+                            {labels.panel}
                         </h1>
                         <p className="mt-1 text-sm leading-5 text-white/60">
-                            Gestão operacional
+                            {labels.operations}
                         </p>
                     </div>
                 </div>
@@ -66,7 +93,17 @@ export default function Sidebar() {
                         }`}
                     >
                         <FontAwesomeIcon icon={item.icon} className="h-4 w-4" />
-                        <span>{item.label}</span>
+                                                <span>
+                                                        {item.label === "Plantões"
+                                                                ? labels.shifts
+                                                                : item.label === "Equipe"
+                                                                    ? labels.team
+                                                                    : item.label === "Relatórios"
+                                                                        ? labels.reports
+                                                                        : item.label === "Configurações"
+                                                                            ? labels.settings
+                                                                            : labels.dashboard}
+                                                </span>
                     </Link>
                 ))}
             </nav>
@@ -77,15 +114,13 @@ export default function Sidebar() {
                         MP
                     </div>
                     <div className="flex min-w-0 flex-col">
-                        <span className="text-[0.65rem] font-medium text-white/50">
-                            Conta
-                        </span>
+                        <span className="text-[0.65rem] font-medium text-white/50">{labels.account}</span>
                         <span className="truncate text-sm font-medium">meuplantao@ad...</span>
                     </div>
                 </div>
                 <div className="flex items-center gap-3">
                     <button className="flex flex-1 items-center justify-between rounded-none border border-white/20 px-4 py-3 text-sm font-medium text-white transition hover:bg-white hover:text-black">
-                        <span>Sair</span>
+                        <span>{labels.signOut}</span>
                         <FontAwesomeIcon icon={faArrowRightFromBracket} className="h-4 w-4" />
                     </button>
                     <ModeToggle
