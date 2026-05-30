@@ -176,10 +176,8 @@ O projeto está publicado na **Vercel**.
 
 ### URL do deploy
 
-Adicione aqui o link oficial do ambiente publicado, por exemplo:
-
 ```text
-https://seu-projeto.vercel.app
+https://meuplantao-web.vercel.app/
 ```
 
 ### Como a publicação funciona
