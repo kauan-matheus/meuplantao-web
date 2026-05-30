@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faChartLine,
@@ -15,14 +16,16 @@ import {
 import { ModeToggle } from "@/components/mode-toggle";
 
 const navItems = [
-    { label: "Dashboard", href: "/pages/dashboard", icon: faChartLine, active: true },
-    { label: "Plantões", href: "/pages/dashboard", icon: faCalendarDays },
+    { label: "Dashboard", href: "/pages/dashboard", icon: faChartLine },
+    { label: "Plantões", href: "/pages/plantoes", icon: faCalendarDays },
     { label: "Equipe", href: "/pages/dashboard", icon: faUserDoctor },
     { label: "Relatórios", href: "/pages/dashboard", icon: faClipboardList },
     { label: "Configurações", href: "/pages/dashboard", icon: faGear },
 ];
 
 export default function Sidebar() {
+    const pathname = usePathname();
+
     return (
         <aside className="fixed inset-y-0 left-0 z-40 hidden h-screen w-72 flex-col border-r border-white/10 bg-black text-white md:flex">
             <div className="border-b border-white/10 px-6 py-6">
@@ -55,9 +58,10 @@ export default function Sidebar() {
                     <Link
                         key={item.label}
                         href={item.href}
+                        aria-current={pathname === item.href ? "page" : undefined}
                         className={`group flex items-center gap-3 rounded-none px-4 py-3 text-sm font-medium transition ${
-                            item.active
-                                ? "bg-white text-black"
+                            pathname === item.href
+                                ? "text-white hover:bg-white/5 hover:text-white"
                                 : "text-white/70 hover:bg-white/5 hover:text-white"
                         }`}
                     >
