@@ -19,7 +19,7 @@ const navItems = [
     { label: "Dashboard", href: "/pages/dashboard", icon: faChartLine },
     { label: "Plantões", href: "/pages/plantoes", icon: faCalendarDays },
     { label: "Equipe", href: "/pages/equipe", icon: faUserDoctor },
-    { label: "Relatórios", href: "/pages/dashboard", icon: faClipboardList },
+    { label: "Relatórios", href: "/pages/relatorios", icon: faClipboardList },
     { label: "Configurações", href: "/pages/dashboard", icon: faGear },
 ];
 
