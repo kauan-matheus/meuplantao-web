@@ -18,7 +18,7 @@ import { ModeToggle } from "@/components/mode-toggle";
 const navItems = [
     { label: "Dashboard", href: "/pages/dashboard", icon: faChartLine },
     { label: "Plantões", href: "/pages/plantoes", icon: faCalendarDays },
-    { label: "Equipe", href: "/pages/dashboard", icon: faUserDoctor },
+    { label: "Equipe", href: "/pages/equipe", icon: faUserDoctor },
     { label: "Relatórios", href: "/pages/dashboard", icon: faClipboardList },
     { label: "Configurações", href: "/pages/dashboard", icon: faGear },
 ];
