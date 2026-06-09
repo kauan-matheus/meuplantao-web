@@ -52,19 +52,6 @@ async function proxyRequest(request: NextRequest, params: { path: string[] }) {
     // Ler resposta da API
     const responseText = await apiResponse.text();
 
-    if (targetPath.includes("plantoes")) {
-      const fs = require("fs");
-      fs.writeFileSync("plantoes_debug.json", responseText);
-    }
-    if (targetPath.includes("setores")) {
-      const fs = require("fs");
-      fs.writeFileSync("setores_debug.json", responseText);
-    }
-    if (targetPath.includes("profissionais")) {
-      const fs = require("fs");
-      fs.writeFileSync("profissionais_debug.json", responseText);
-    }
-
     // Retornar resposta com os headers corretos
     return new NextResponse(responseText || null, {
       status: apiResponse.status,
