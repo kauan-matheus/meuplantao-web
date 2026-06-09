@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faChartLine,
@@ -15,6 +15,7 @@ import {
 
 import { ModeToggle } from "@/components/mode-toggle";
 import { useLanguage } from "@/components/language-provider";
+import { useAuth } from "@/lib/hooks/use-auth";
 
 const navItems = [
     { label: "Dashboard", href: "/pages/dashboard", icon: faChartLine },
@@ -26,7 +27,20 @@ const navItems = [
 
 export default function Sidebar() {
     const pathname = usePathname();
+    const router = useRouter();
     const { language } = useLanguage();
+    const { user, logout } = useAuth();
+
+    function handleSignOut() {
+        logout();
+        router.replace("/pages/login");
+    }
+
+    // Iniciais do email para o avatar
+    const userInitials = user?.email
+        ? user.email.substring(0, 2).toUpperCase()
+        : "MP";
+    const userEmail = user?.email ?? "meuplantao@ad...";
 
     const labels =
         language === "en"
@@ -111,15 +125,18 @@ export default function Sidebar() {
             <div className="border-t border-white/10 px-6 py-6">
                 <div className="mb-4 flex items-center gap-3 rounded-none border border-white/10 px-4 py-3">
                     <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-none bg-white text-xs font-semibold text-black">
-                        MP
+                        {userInitials}
                     </div>
                     <div className="flex min-w-0 flex-col">
                         <span className="text-[0.65rem] font-medium text-white/50">{labels.account}</span>
-                        <span className="truncate text-sm font-medium">meuplantao@ad...</span>
+                        <span className="truncate text-sm font-medium" title={userEmail}>{userEmail}</span>
                     </div>
                 </div>
                 <div className="flex items-center gap-3">
-                    <button className="flex flex-1 items-center justify-between rounded-none border border-white/20 px-4 py-3 text-sm font-medium text-white transition hover:bg-white hover:text-black">
+                    <button
+                        onClick={handleSignOut}
+                        className="flex flex-1 items-center justify-between rounded-none border border-white/20 px-4 py-3 text-sm font-medium text-white transition hover:bg-white hover:text-black"
+                    >
                         <span>{labels.signOut}</span>
                         <FontAwesomeIcon icon={faArrowRightFromBracket} className="h-4 w-4" />
                     </button>
