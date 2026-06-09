@@ -8,7 +8,7 @@ import Sidebar from "@/components/sidebar/sidebar";
 import Particles from "@/components/ui/particles";
 
 import { RelatoriosExportButton } from "./relatorios-export-button";
-import { relatoriosSeed, type RelatorioPlantao, type RelatorioStatus } from "./relatorios-data";
+import { relatoriosSeed, type RelatorioStatus } from "./relatorios-data";
 import { RelatoriosFilters } from "./relatorios-filters";
 import { RelatoriosSummary } from "./relatorios-summary";
 import { RelatoriosTable } from "./relatorios-table";

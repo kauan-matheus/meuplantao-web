@@ -40,12 +40,13 @@ export function buildAuthHeaders(): Record<string, string> {
  */
 export async function parseErrorResponse(response: Response): Promise<ApiError> {
   let problem: ProblemDetails | null = null;
+  let rawText = "";
 
   try {
-    const text = await response.text();
+    rawText = await response.text();
 
-    if (text) {
-      problem = JSON.parse(text) as ProblemDetails;
+    if (rawText) {
+      problem = JSON.parse(rawText) as ProblemDetails;
     }
   } catch {
     // body não é JSON — ignorar
@@ -56,6 +57,14 @@ export async function parseErrorResponse(response: Response): Promise<ApiError> 
       ...problem,
       status: problem.status ?? response.status,
     });
+  }
+
+  if (rawText && !rawText.startsWith("<html")) {
+    let cleanText = rawText;
+    if (cleanText.startsWith('"') && cleanText.endsWith('"')) {
+       cleanText = cleanText.slice(1, -1);
+    }
+    return new ApiError(cleanText, response.status);
   }
 
   return new ApiError(

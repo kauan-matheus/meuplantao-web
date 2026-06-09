@@ -30,7 +30,7 @@ export function middleware(request: NextRequest) {
   // Checar se o token existe no cookie OU no localStorage via header customizado
   // No middleware (server-side), só temos acesso a cookies, não localStorage.
   // O token é verificado via cookie quando disponível.
-  const token = request.cookies.get("meuplantao.token")?.value;
+  // const token = request.cookies.get("meuplantao.token")?.value;
 
   // Se não há cookie, permitir acesso — o AuthGuard no client-side fará a
   // validação completa. Isso evita bloqueio quando o token está apenas no

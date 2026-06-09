@@ -1,19 +1,21 @@
-import { weeklyVolume } from "./dashboard-data";
+interface WeeklyChartProps {
+  data: Array<{ day: string; value: number }>;
+}
 
-export function WeeklyChart() {
-  const maxValue = Math.max(...weeklyVolume.map((item) => item.value), 1);
+export function WeeklyChart({ data }: WeeklyChartProps) {
+  const maxValue = Math.max(...data.map((item) => item.value), 1);
 
   return (
     <article className="flex h-full flex-col rounded-none border border-slate-200 bg-white p-4 dark:border-white/10 dark:bg-slate-950">
       <div className="mb-4 flex items-end justify-between gap-4">
         <div>
           <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-50">Volume por dia</h3>
-          <p className="text-sm text-slate-600 dark:text-slate-300">Plantões processados na semana atual.</p>
+          <p className="text-sm text-slate-600 dark:text-slate-300">Plantões processados no período (por dia da semana).</p>
         </div>
       </div>
 
       <div className="grid min-h-60 flex-1 grid-cols-7 items-end gap-3">
-        {weeklyVolume.map((item) => {
+        {data.map((item) => {
           const height = `${Math.max(12, Math.round((item.value / maxValue) * 100))}%`;
 
           return (

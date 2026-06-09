@@ -87,6 +87,7 @@ class HttpClient {
       method,
       headers,
       body: body ? JSON.stringify(body) : undefined,
+      cache: "no-store",
     };
 
     try {

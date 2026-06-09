@@ -40,9 +40,11 @@ export default function ConfiguracoesPage() {
     useEffect(() => {
         const nextIdioma = language === "en" ? "English" : "Português (Brasil)";
 
+        // eslint-disable-next-line
         setSettings((currentSettings) =>
             currentSettings.idioma === nextIdioma ? currentSettings : { ...currentSettings, idioma: nextIdioma }
         );
+        // eslint-disable-next-line
         setSavedSettings((currentSettings) =>
             currentSettings.idioma === nextIdioma ? currentSettings : { ...currentSettings, idioma: nextIdioma }
         );

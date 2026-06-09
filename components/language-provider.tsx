@@ -30,6 +30,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     const [language, setLanguageState] = React.useState<AppLanguage>("pt-BR");
 
     React.useEffect(() => {
+        // eslint-disable-next-line
         setLanguageState(getInitialLanguage());
     }, []);
 

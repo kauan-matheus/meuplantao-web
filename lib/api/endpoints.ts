@@ -27,8 +27,8 @@ export const PLANTAO_ENDPOINTS = {
   BY_ID: (id: number) => `/api/Plantao/plantoes/${id}`,
   SOLICITACOES: (id: number) => `/api/Plantao/plantoes/${id}/solicitacoes`,
   SOLICITAR: (id: number) => `/api/Plantao/plantoes/${id}/solicitar`,
-  ACEITAR: (id: number) => `/api/Plantao/plantoes/${id}/aceitar`,
-  RECUSAR: (id: number) => `/api/Plantao/plantoes/${id}/recusar`,
+  ACEITAR: (id: number, solicitanteId: number) => `/api/Plantao/plantoes/${id}/aceitar?solicitanteId=${solicitanteId}`,
+  RECUSAR: (id: number, solicitanteId: number) => `/api/Plantao/plantoes/${id}/recusar?solicitanteId=${solicitanteId}`,
 } as const;
 
 // ---------------------------------------------------------------------------

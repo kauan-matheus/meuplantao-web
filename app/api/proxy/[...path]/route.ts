@@ -15,7 +15,12 @@ import { API_BASE_URL } from "@/lib/api/endpoints";
 async function proxyRequest(request: NextRequest, params: { path: string[] }) {
   const { path } = await params;
   const targetPath = path.join("/");
-  const targetUrl = `${API_BASE_URL}/${targetPath}`;
+  
+  // Repassar também os query parameters da URL (ex: ?solicitanteId=1)
+  const searchParams = request.nextUrl.searchParams.toString();
+  const queryString = searchParams ? `?${searchParams}` : "";
+  
+  const targetUrl = `${API_BASE_URL}/${targetPath}${queryString}`;
 
   // Copiar headers relevantes do request original
   const headers: Record<string, string> = {
@@ -46,6 +51,19 @@ async function proxyRequest(request: NextRequest, params: { path: string[] }) {
 
     // Ler resposta da API
     const responseText = await apiResponse.text();
+
+    if (targetPath.includes("plantoes")) {
+      const fs = require("fs");
+      fs.writeFileSync("plantoes_debug.json", responseText);
+    }
+    if (targetPath.includes("setores")) {
+      const fs = require("fs");
+      fs.writeFileSync("setores_debug.json", responseText);
+    }
+    if (targetPath.includes("profissionais")) {
+      const fs = require("fs");
+      fs.writeFileSync("profissionais_debug.json", responseText);
+    }
 
     // Retornar resposta com os headers corretos
     return new NextResponse(responseText || null, {

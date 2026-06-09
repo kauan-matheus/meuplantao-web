@@ -12,7 +12,6 @@ import { httpClient } from "@/lib/api/http-client";
 import { AUTH_ENDPOINTS } from "@/lib/api/endpoints";
 import { ApiError } from "@/lib/types/api.types";
 import {
-  ALLOWED_ROLES,
   type RequestAuthLoginJson,
   type ResponseAuthLoginJson,
   type ResponseAuthUserJson,
@@ -46,16 +45,6 @@ export async function login(
   // Validar se a resposta possui token
   if (!data.token) {
     throw new ApiError("Resposta de login inválida: token ausente.", 400);
-  }
-
-  // Validar se a role é permitida no painel (Admin ou Gestor)
-  const userRole = data.usuario?.role;
-
-  if (!userRole || !ALLOWED_ROLES.has(userRole)) {
-    throw new ApiError(
-      "Email ou senha incorretos.",
-      401,
-    );
   }
 
   // Persistir sessão

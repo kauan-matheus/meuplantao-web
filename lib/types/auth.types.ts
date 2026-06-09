@@ -10,6 +10,7 @@
 export enum UserRole {
   Admin = "Admin",
   Gestor = "Gestor",
+  Profissional = "Profissional", // Role retornada pela API (Representante)
   Medico = "Medico",
   Enfermeiro = "Enfermeiro",
 }
@@ -18,6 +19,7 @@ export enum UserRole {
 export const ALLOWED_ROLES: ReadonlySet<string> = new Set([
   UserRole.Admin,
   UserRole.Gestor,
+  UserRole.Profissional,
 ]);
 
 // ---------------------------------------------------------------------------

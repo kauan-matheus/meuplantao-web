@@ -4,9 +4,6 @@ import { useMemo, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
 	faCirclePlus,
-	faEye,
-	faPenToSquare,
-	faTrash,
 	faUsers,
 } from "@fortawesome/free-solid-svg-icons";
 

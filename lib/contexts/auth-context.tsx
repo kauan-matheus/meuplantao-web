@@ -34,11 +34,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [token, setToken] = React.useState<string | null>(null);
   const [isLoading, setIsLoading] = React.useState(true);
 
-  // Restaurar sessão no mount
-  React.useEffect(() => {
-    restoreSession();
-  }, []);
-
   function restoreSession() {
     const storedToken = authService.getStoredToken();
     const storedUser = authService.getStoredUser();
@@ -55,6 +50,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     setIsLoading(false);
   }
+
+  // Restaurar sessão no mount
+  React.useEffect(() => {
+    restoreSession();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   async function login(credentials: RequestAuthLoginJson): Promise<void> {
     const response = await authService.login(credentials);
