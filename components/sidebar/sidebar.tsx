@@ -124,8 +124,12 @@ export default function Sidebar() {
 
             <div className="border-t border-white/10 px-6 py-6">
                 <div className="mb-4 flex items-center gap-3 rounded-none border border-white/10 px-4 py-3">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-none bg-white text-xs font-semibold text-black">
-                        {userInitials}
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-none bg-white text-xs font-semibold text-black overflow-hidden">
+                        {user?.fotoPerfilUrl ? (
+                            <img src={user.fotoPerfilUrl} alt="Avatar" className="h-full w-full object-cover" />
+                        ) : (
+                            userInitials
+                        )}
                     </div>
                     <div className="flex min-w-0 flex-col">
                         <span className="text-[0.65rem] font-medium text-white/50">{labels.account}</span>

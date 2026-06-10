@@ -49,6 +49,7 @@ function apiUserToMember(user: ApiUser): EquipeMember {
     department: "",
     status: user.active ? "Ativo" : "Inativo",
     notes: "",
+    photoUrl: user.fotoPerfilUrl || undefined,
   };
 }
 

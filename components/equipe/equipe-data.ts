@@ -8,6 +8,7 @@ export type EquipeMember = {
     department: string;
     status: "Ativo" | "Inativo";
     notes: string;
+    photoUrl?: string;
 };
 
 export const equipeRoles: Array<EquipeRole | "Todos"> = ["Todos", "Admin", "Profissional", "Gestor"];

@@ -51,9 +51,20 @@ export function EquipeMemberModal({
         <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/60 px-4 py-6 backdrop-blur-sm">
             <div className="w-full max-w-3xl border border-slate-200 bg-white shadow-[0_24px_80px_-24px_rgba(15,23,42,0.6)] dark:border-white/10 dark:bg-slate-950">
                 <div className="flex items-start justify-between gap-4 border-b border-slate-200 px-5 py-4 dark:border-white/10">
-                    <div>
-                        <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Gestão de usuários</p>
-                        <h3 className="mt-1 text-xl font-semibold text-slate-950 dark:text-slate-50">{title}</h3>
+                    <div className="flex items-center gap-4">
+                        {member?.photoUrl ? (
+                            <div className="h-12 w-12 shrink-0 overflow-hidden rounded-full border border-slate-200 bg-slate-100 dark:border-white/10 dark:bg-white/5">
+                                <img src={member.photoUrl} alt="Avatar" className="h-full w-full object-cover" />
+                            </div>
+                        ) : (
+                            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-slate-100 text-lg font-semibold text-slate-500 dark:border-white/10 dark:bg-white/5 dark:text-slate-400">
+                                {draft.email ? draft.email.charAt(0).toUpperCase() : "U"}
+                            </div>
+                        )}
+                        <div>
+                            <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Gestão de usuários</p>
+                            <h3 className="mt-1 text-xl font-semibold text-slate-950 dark:text-slate-50">{title}</h3>
+                        </div>
                     </div>
                     <button
                         type="button"
