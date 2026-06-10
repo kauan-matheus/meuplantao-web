@@ -6,6 +6,7 @@ export type PlantaoItem = {
   id: string;
   unidade: string;
   profissional: string;
+  fotoProfissional?: string;
   especialidade: string;
   periodo: string;
   solicitante: string;

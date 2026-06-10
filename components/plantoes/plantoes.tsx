@@ -287,7 +287,7 @@ export default function Plantoes() {
         try {
             await handleDeletarPlantao(Number(selectedPlantao.id));
             closePlantaoModal();
-        } catch (_error) {
+        } catch {
             // Toast já foi exibido no hook
         } finally {
             setIsProcessing(false);
@@ -300,7 +300,7 @@ export default function Plantoes() {
         try {
             await handleDeletarPlantao(Number(itemToDelete.id));
             setItemToDelete(null);
-        } catch (_error) {
+        } catch {
             // Toast já foi exibido no hook
         } finally {
             setIsProcessing(false);

@@ -1,6 +1,8 @@
 import { useState, useEffect, useMemo } from "react";
 import { toast } from "sonner";
 import { getPlantoes, aprovarPlantao, recusarPlantao, criarPlantao, editarPlantao, deletarPlantao } from "@/lib/services/plantao.service";
+import { getUsuarios } from "@/lib/services/user.service";
+import { getProfissionais } from "@/lib/services/profissional.service";
 import type { PlantaoItem, PlantaoStatus } from "@/components/plantoes/plantoes-data";
 
 export function usePlantoes() {
@@ -15,7 +17,34 @@ export function usePlantoes() {
     setIsLoading(true);
     setError(null);
     try {
-      const plantoesData = await getPlantoes();
+      const [plantoesData, usersData, profissionaisData] = await Promise.all([
+        getPlantoes(),
+        getUsuarios().catch(() => []), // Ignora erro se falhar em pegar os usuários
+        getProfissionais().catch(() => []) // Ignora erro se falhar em pegar os profissionais
+      ]);
+
+      // Mapeia UserId -> FotoPerfilUrl
+      const usersMap = new Map<number, string>();
+      if (Array.isArray(usersData)) {
+        usersData.forEach((u) => {
+          if (u.id && u.fotoPerfilUrl) {
+            usersMap.set(u.id, u.fotoPerfilUrl);
+          }
+        });
+      }
+
+      // Mapeia Nome do Profissional -> FotoPerfilUrl
+      const profissionaisPhotoMap = new Map<string, string>();
+      if (Array.isArray(profissionaisData)) {
+        profissionaisData.forEach((p) => {
+          if (p.nome && p.userId) {
+            const photoUrl = usersMap.get(p.userId);
+            if (photoUrl) {
+              profissionaisPhotoMap.set(p.nome.toLowerCase(), photoUrl);
+            }
+          }
+        });
+      }
       
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const mapped: PlantaoItem[] = (plantoesData || []).map((p: any) => {
@@ -41,10 +70,23 @@ export function usePlantoes() {
           }
         }
 
+        // Tenta encontrar a foto do profissional comparando o nome exato com a tabela de profissionais
+        let fotoProfissional: string | undefined = undefined;
+        let baseName = professionalName;
+        // Se estiver pendente, o nome inclui "(Aguardando Aprovação)"
+        if (baseName.includes("(Aguardando")) {
+          baseName = p.requesterName as string;
+        }
+
+        if (baseName && baseName !== "Não alocado" && baseName !== "Disponível") {
+          fotoProfissional = profissionaisPhotoMap.get(baseName.toLowerCase());
+        }
+
         return {
           id: p.id?.toString() || "-",
           unidade: (p.locale as string) || "Unidade não informada",
           profissional: professionalName,
+          fotoProfissional,
           especialidade: (p.sector as string) || "Geral",
           periodo: `${p.date}, ${p.start} (${p.duration}h)`,
           solicitante: (p.responsable as string) || "Sistema", 

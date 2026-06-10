@@ -77,6 +77,7 @@ export function useEquipe() {
   }, []);
 
   useEffect(() => {
+    // eslint-disable-next-line
     fetchData();
   }, [fetchData]);
 

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck, faCircleXmark, faEye, faTrash, faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
@@ -113,8 +114,19 @@ export function PlantoesTable({ items, onApprove, onReject, onDelete, onView }: 
                   </td>
                   <td className="py-4 pr-4 text-sm text-slate-700 dark:text-slate-200">{item.unidade}</td>
                   <td className="py-4 pr-4 text-sm text-slate-700 dark:text-slate-200">
-                    <div className="font-medium text-slate-900 dark:text-slate-50">{item.profissional}</div>
-                    <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">{item.especialidade}</div>
+                    <div className="flex items-center gap-3">
+                      {item.fotoProfissional ? (
+                          <img src={item.fotoProfissional} alt={item.profissional} className="h-8 w-8 rounded-full object-cover" />
+                      ) : (
+                          <div className="flex shrink-0 h-8 w-8 items-center justify-center rounded-full bg-slate-200 text-xs font-semibold text-slate-600 dark:bg-white/10 dark:text-slate-300">
+                              {item.profissional !== "Não alocado" && item.profissional !== "Disponível" ? item.profissional.replace(/\(Aguardando.*\)/, '').trim().charAt(0).toUpperCase() : "-"}
+                          </div>
+                      )}
+                      <div>
+                        <div className="font-medium text-slate-900 dark:text-slate-50">{item.profissional}</div>
+                        <div className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">{item.especialidade}</div>
+                      </div>
+                    </div>
                   </td>
                   <td className="py-4 pr-4 text-sm text-slate-700 dark:text-slate-200">{item.periodo}</td>
                   <td className="py-4 pr-4 text-sm">
@@ -133,34 +145,34 @@ export function PlantoesTable({ items, onApprove, onReject, onDelete, onView }: 
                       <button
                         type="button"
                         onClick={() => onView(item)}
-                        className={`inline-flex h-9 items-center gap-1.5 border px-2.5 text-xs font-medium whitespace-nowrap transition ${viewButtonClass()}`}
+                        title="Ver detalhes"
+                        className={`inline-flex h-8 w-8 items-center justify-center border transition ${viewButtonClass()}`}
                       >
                         <FontAwesomeIcon icon={faEye} className="h-3.5 w-3.5" />
-                        Ver
                       </button>
                       <button
                         type="button"
                         onClick={() => onApprove(item.id)}
-                        className={`inline-flex h-9 items-center gap-1.5 border px-2.5 text-xs font-medium whitespace-nowrap transition ${actionButtonClass("approve")}`}
+                        title="Aprovar plantão"
+                        className={`inline-flex h-8 w-8 items-center justify-center border transition ${actionButtonClass("approve")}`}
                       >
                         <FontAwesomeIcon icon={faCircleCheck} className="h-3.5 w-3.5" />
-                        Aprovar
                       </button>
                       <button
                         type="button"
                         onClick={() => onReject(item.id)}
-                        className={`inline-flex h-9 items-center gap-1.5 border px-2.5 text-xs font-medium whitespace-nowrap transition ${actionButtonClass("reject")}`}
+                        title="Recusar plantão"
+                        className={`inline-flex h-8 w-8 items-center justify-center border transition ${actionButtonClass("reject")}`}
                       >
                         <FontAwesomeIcon icon={faCircleXmark} className="h-3.5 w-3.5" />
-                        Recusar
                       </button>
                       <button
                         type="button"
                         onClick={() => onDelete(item.id)}
-                        className="inline-flex h-9 items-center gap-1.5 border border-slate-200 bg-white px-2.5 text-xs font-medium text-slate-500 hover:-translate-y-px hover:border-rose-300 hover:bg-rose-50 hover:text-rose-700 whitespace-nowrap transition dark:border-white/10 dark:bg-slate-950 dark:text-slate-400 dark:hover:border-rose-500/30 dark:hover:bg-rose-500/10 dark:hover:text-rose-400"
+                        title="Excluir plantão"
+                        className="inline-flex h-8 w-8 items-center justify-center border border-slate-200 bg-white text-slate-500 hover:-translate-y-px hover:border-rose-300 hover:bg-rose-50 hover:text-rose-700 transition dark:border-white/10 dark:bg-slate-950 dark:text-slate-400 dark:hover:border-rose-500/30 dark:hover:bg-rose-500/10 dark:hover:text-rose-400"
                       >
                         <FontAwesomeIcon icon={faTrash} className="h-3.5 w-3.5" />
-                        Excluir
                       </button>
                     </div>
                   </td>

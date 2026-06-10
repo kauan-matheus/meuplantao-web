@@ -5,6 +5,7 @@ export type RelatorioPlantao = {
     unidade: string;
     profissional: string;
     concluidoPor: string;
+    fotoProfissional?: string;
     data: string;
     valorGerado: number;
     status: RelatorioStatus;

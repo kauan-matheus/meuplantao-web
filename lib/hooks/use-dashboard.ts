@@ -140,7 +140,7 @@ export function useDashboard() {
             days[dayOfWeek].value++;
           }
         }
-      } catch (_e) {
+      } catch {
         // ignora data inválida
       }
     });

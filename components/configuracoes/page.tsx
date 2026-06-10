@@ -14,7 +14,7 @@ import { ConfiguracoesSection } from "./configuracoes-section";
 import { configuracoesIniciais, type ConfiguracoesState } from "./configuracoes-data";
 
 export default function ConfiguracoesPage() {
-    const { setTheme } = useTheme();
+    const { setTheme, theme, resolvedTheme } = useTheme();
     const { language, setLanguage } = useLanguage();
     const [settings, setSettings] = useState<ConfiguracoesState>(configuracoesIniciais);
     const [savedSettings, setSavedSettings] = useState<ConfiguracoesState>(configuracoesIniciais);
@@ -25,12 +25,18 @@ export default function ConfiguracoesPage() {
 
     function updateField<K extends keyof ConfiguracoesState>(field: K, value: ConfiguracoesState[K]) {
         setSettings((currentSettings) => ({ ...currentSettings, [field]: value }));
+
+        // Aplicar o tema imediatamente ao clicar no switch
+        if (field === "darkMode") {
+            setTheme(value ? "dark" : "light");
+        }
     }
 
     function saveSettings() {
         setSavedSettings(settings);
         setLanguage(settings.idioma === "English" ? "en" : "pt-BR");
-        setTheme(settings.darkMode ? "system" : "light");
+        // O tema já foi aplicado no updateField, mas podemos forçar aqui caso necessário
+        setTheme(settings.darkMode ? "dark" : "light");
     }
 
     function resetSettings() {
@@ -39,34 +45,39 @@ export default function ConfiguracoesPage() {
 
     useEffect(() => {
         const nextIdioma = language === "en" ? "English" : "Português (Brasil)";
+        const isDark = resolvedTheme === "dark" || theme === "dark";
 
-        // eslint-disable-next-line
-        setSettings((currentSettings) =>
-            currentSettings.idioma === nextIdioma ? currentSettings : { ...currentSettings, idioma: nextIdioma }
-        );
-        // eslint-disable-next-line
-        setSavedSettings((currentSettings) =>
-            currentSettings.idioma === nextIdioma ? currentSettings : { ...currentSettings, idioma: nextIdioma }
-        );
-    }, [language]);
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setSettings((currentSettings) => ({
+            ...currentSettings,
+            idioma: nextIdioma,
+            darkMode: isDark,
+        }));
+        
+        setSavedSettings((currentSettings) => ({
+            ...currentSettings,
+            idioma: nextIdioma,
+            darkMode: isDark,
+        }));
+    }, [language, theme, resolvedTheme]);
 
     const copy = language === "en"
         ? {
-              sectionTag: "System settings",
-              title: "Customize how the system works for each profile.",
-              subtitle: "Adjust account and interface in one place.",
-              restore: "Restore defaults",
-              save: "Save changes",
-              pending: "Pending changes",
-          }
+            sectionTag: "System settings",
+            title: "Customize how the system works for each profile.",
+            subtitle: "Adjust account and interface in one place.",
+            restore: "Restore defaults",
+            save: "Save changes",
+            pending: "Pending changes",
+        }
         : {
-              sectionTag: "Configurações do sistema",
-              title: "Personalize como o sistema funciona para cada perfil.",
-              subtitle: "Ajuste conta e interface em um único lugar.",
-              restore: "Restaurar padrão",
-              save: "Salvar alterações",
-              pending: "Alterações pendentes",
-          };
+            sectionTag: "Configurações do sistema",
+            title: "Personalize como o sistema funciona para cada perfil.",
+            subtitle: "Ajuste conta e interface em um único lugar.",
+            restore: "Restaurar padrão",
+            save: "Salvar alterações",
+            pending: "Alterações pendentes",
+        };
 
     return (
         <div className="relative isolate min-h-screen overflow-x-hidden bg-background md:pl-72">

@@ -23,6 +23,7 @@ export interface Profissional {
   nome: string;
   crm?: string;
   coren?: string;
+  userId?: number;
 }
 
 export interface Plantao {

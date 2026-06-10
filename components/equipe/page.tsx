@@ -8,7 +8,7 @@ import Sidebar from "@/components/sidebar/sidebar";
 import Particles from "@/components/ui/particles";
 import { Button } from "@/components/ui/button";
 
-import { equipeRoles, type EquipeMember, type EquipeRole } from "./equipe-data";
+import { equipeRoles, type EquipeMember } from "@/components/equipe/equipe-data";
 import { EquipeFilters } from "./equipe-filters";
 import { EquipeMemberModal } from "./equipe-modal";
 import { EquipeTable } from "./equipe-table";
@@ -105,7 +105,7 @@ export default function EquipePage() {
 				});
 				closeModal();
 			}
-		} catch (_err) {
+		} catch {
 			// Toast já exibido pelo hook
 		} finally {
 			setIsProcessing(false);
@@ -132,7 +132,7 @@ export default function EquipePage() {
 			if (selectedMember?.id === memberToDelete) {
 				closeModal();
 			}
-		} catch (_err) {
+		} catch {
 			// Toast já exibido pelo hook
 		} finally {
 			setIsProcessing(false);

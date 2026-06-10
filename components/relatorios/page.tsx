@@ -1,49 +1,27 @@
 "use client";
 
-import { useMemo, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileLines } from "@fortawesome/free-solid-svg-icons";
 
 import Sidebar from "@/components/sidebar/sidebar";
 import Particles from "@/components/ui/particles";
-
 import { RelatoriosExportButton } from "./relatorios-export-button";
-import { relatoriosSeed, type RelatorioStatus } from "./relatorios-data";
 import { RelatoriosFilters } from "./relatorios-filters";
 import { RelatoriosSummary } from "./relatorios-summary";
 import { RelatoriosTable } from "./relatorios-table";
+import { useRelatorios } from "@/lib/hooks/use-relatorios";
 
 export default function RelatoriosPage() {
-    const [search, setSearch] = useState("");
-    const [status, setStatus] = useState<RelatorioStatus | "Todos">("Todos");
-
-    const filteredRows = useMemo(() => {
-        const query = search.trim().toLowerCase();
-
-        return relatoriosSeed.filter((row) => {
-            const matchesSearch =
-                query.length === 0 ||
-                [row.id, row.unidade, row.profissional, row.concluidoPor, row.data]
-                    .join(" ")
-                    .toLowerCase()
-                    .includes(query);
-
-            const matchesStatus = status === "Todos" || row.status === status;
-
-            return matchesSearch && matchesStatus;
-        });
-    }, [search, status]);
-
-    const summary = useMemo(() => {
-        const total = relatoriosSeed.length;
-        const completos = relatoriosSeed.filter((row) => row.status === "Completo").length;
-        const emAberto = relatoriosSeed.filter((row) => row.status === "Em aberto").length;
-        const receitaTotal = relatoriosSeed
-            .filter((row) => row.status === "Completo")
-            .reduce((sum, row) => sum + row.valorGerado, 0);
-
-        return { total, completos, emAberto, receitaTotal };
-    }, []);
+    const {
+        rows: filteredRows,
+        allRows,
+        summary,
+        isLoading,
+        search,
+        setSearch,
+        status,
+        setStatus,
+    } = useRelatorios();
 
     return (
         <div className="relative isolate min-h-screen overflow-x-hidden bg-background md:pl-72">
@@ -95,11 +73,11 @@ export default function RelatoriosPage() {
                         />
 
                         <div className="lg:pb-0">
-                            <RelatoriosExportButton rows={filteredRows} />
+                            <RelatoriosExportButton rows={filteredRows} allRows={allRows} />
                         </div>
                     </div>
 
-                    <RelatoriosTable rows={filteredRows} />
+                    <RelatoriosTable rows={filteredRows} isLoading={isLoading} />
                 </div>
             </main>
         </div>

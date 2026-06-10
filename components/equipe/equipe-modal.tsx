@@ -1,5 +1,6 @@
 "use client";
 
+/* eslint-disable @next/next/no-img-element */
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faFloppyDisk, faPenToSquare, faTrash, faXmark, faSpinner } from "@fortawesome/free-solid-svg-icons";
 

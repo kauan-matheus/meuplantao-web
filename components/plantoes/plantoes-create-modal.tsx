@@ -52,7 +52,6 @@ export function PlantoesCreateModal({ open, onClose, onSave }: PlantoesCreateMod
       setError(null);
       carregarSetores();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
