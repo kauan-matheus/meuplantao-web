@@ -53,8 +53,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // Restaurar sessão no mount
   React.useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     restoreSession();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function login(credentials: RequestAuthLoginJson): Promise<void> {

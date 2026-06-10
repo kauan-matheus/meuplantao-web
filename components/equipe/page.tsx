@@ -1,50 +1,42 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-	faCirclePlus,
-	faUsers,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCirclePlus, faUsers, faTrash, faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 import Sidebar from "@/components/sidebar/sidebar";
 import Particles from "@/components/ui/particles";
 import { Button } from "@/components/ui/button";
 
-import { equipeRoles, equipeSeed, type EquipeMember, type EquipeRole } from "./equipe-data";
+import { equipeRoles, type EquipeMember, type EquipeRole } from "./equipe-data";
 import { EquipeFilters } from "./equipe-filters";
 import { EquipeMemberModal } from "./equipe-modal";
 import { EquipeTable } from "./equipe-table";
+import { useEquipe } from "@/lib/hooks/use-equipe";
 
 type ModalMode = "view" | "create" | "edit";
 
-type DraftMember = Omit<EquipeMember, "id"> & { id?: string };
+type DraftMember = Omit<EquipeMember, "id"> & { id?: string; password?: string };
 
 export default function EquipePage() {
-	const [search, setSearch] = useState("");
-	const [role, setRole] = useState<EquipeRole | "Todos">("Todos");
-	const [members, setMembers] = useState<EquipeMember[]>(equipeSeed);
+	const {
+		members,
+		isLoading,
+		search,
+		setSearch,
+		role,
+		setRole,
+		handleCreateUser,
+		handleEditUser,
+		handleDeleteUser,
+	} = useEquipe();
+
 	const [modalOpen, setModalOpen] = useState(false);
 	const [modalMode, setModalMode] = useState<ModalMode>("view");
 	const [selectedMember, setSelectedMember] = useState<EquipeMember | null>(null);
 	const [draft, setDraft] = useState<DraftMember | null>(null);
-
-	const filteredMembers = useMemo(() => {
-		const query = search.trim().toLowerCase();
-
-		return members.filter((member) => {
-			const matchesSearch =
-				query.length === 0 ||
-				[member.name, member.email, member.department, member.role, member.status]
-					.join(" ")
-					.toLowerCase()
-					.includes(query);
-
-			const matchesRole = role === "Todos" || member.role === role;
-
-			return matchesSearch && matchesRole;
-		});
-	}, [members, role, search]);
+	const [isProcessing, setIsProcessing] = useState(false);
+	const [memberToDelete, setMemberToDelete] = useState<string | null>(null);
 
 	function openCreateModal() {
 		setModalMode("create");
@@ -52,6 +44,7 @@ export default function EquipePage() {
 		setDraft({
 			name: "",
 			email: "",
+			password: "",
 			role: "Profissional",
 			department: "",
 			status: "Ativo",
@@ -63,22 +56,19 @@ export default function EquipePage() {
 	function openViewModal(member: EquipeMember) {
 		setModalMode("view");
 		setSelectedMember(member);
-		setDraft({ ...member });
+		setDraft({ ...member, password: "" });
 		setModalOpen(true);
 	}
 
 	function openEditModal(member: EquipeMember) {
 		setModalMode("edit");
 		setSelectedMember(member);
-		setDraft({ ...member });
+		setDraft({ ...member, password: "" });
 		setModalOpen(true);
 	}
 
 	function switchModalToEdit() {
-		if (!draft) {
-			return;
-		}
-
+		if (!draft) return;
 		setModalMode("edit");
 	}
 
@@ -92,45 +82,61 @@ export default function EquipePage() {
 		setDraft((currentDraft) => (currentDraft ? { ...currentDraft, [field]: value } : currentDraft));
 	}
 
-	function saveMember() {
-		if (!draft) {
-			return;
+	async function saveMember() {
+		if (!draft) return;
+		setIsProcessing(true);
+
+		try {
+			if (modalMode === "create") {
+				await handleCreateUser({
+					email: draft.email,
+					password: draft.password || "usuario",
+					role: draft.role,
+					active: draft.status === "Ativo",
+				});
+				closeModal();
+			} else if (modalMode === "edit" && draft.id) {
+				await handleEditUser({
+					id: Number(draft.id),
+					email: draft.email,
+					password: draft.password || "usuario",
+					role: draft.role,
+					active: draft.status === "Ativo",
+				});
+				closeModal();
+			}
+		} catch (_err) {
+			// Toast já exibido pelo hook
+		} finally {
+			setIsProcessing(false);
 		}
-
-		if (modalMode === "create") {
-			const nextMember: EquipeMember = {
-				id: `USR-${String(members.length + 1).padStart(3, "0")}`,
-				name: draft.name,
-				email: draft.email,
-				role: draft.role,
-				department: draft.department,
-				status: draft.status,
-				notes: draft.notes,
-			};
-
-			setMembers((currentMembers) => [nextMember, ...currentMembers]);
-			setSelectedMember(nextMember);
-			setDraft(nextMember);
-			setModalMode("view");
-			return;
-		}
-
-		setMembers((currentMembers) =>
-			currentMembers.map((member) => (member.id === draft.id ? (draft as EquipeMember) : member))
-		);
-		setSelectedMember(draft as EquipeMember);
-		setModalMode("view");
 	}
 
-	function deleteMember(memberId?: string) {
+	function confirmDelete(memberId?: string) {
 		const targetId = memberId ?? selectedMember?.id;
+		if (!targetId) return;
+		setMemberToDelete(targetId);
+	}
 
-		if (!targetId) {
-			return;
+	function cancelDelete() {
+		setMemberToDelete(null);
+	}
+
+	async function executeDelete() {
+		if (!memberToDelete) return;
+		
+		setIsProcessing(true);
+		try {
+			await handleDeleteUser(Number(memberToDelete));
+			setMemberToDelete(null);
+			if (selectedMember?.id === memberToDelete) {
+				closeModal();
+			}
+		} catch (_err) {
+			// Toast já exibido pelo hook
+		} finally {
+			setIsProcessing(false);
 		}
-
-		setMembers((currentMembers) => currentMembers.filter((member) => member.id !== targetId));
-		closeModal();
 	}
 
 	return (
@@ -187,10 +193,12 @@ export default function EquipePage() {
 					</div>
 
 					<EquipeTable
-						members={filteredMembers}
+						members={members}
+						isLoading={isLoading}
+						isProcessing={isProcessing}
 						onView={openViewModal}
 						onEdit={openEditModal}
-						onDelete={deleteMember}
+						onDelete={confirmDelete}
 					/>
 				</div>
 
@@ -199,12 +207,47 @@ export default function EquipePage() {
 					mode={modalMode}
 					member={selectedMember}
 					draft={draft}
+					isProcessing={isProcessing}
 					onClose={closeModal}
 					onChange={updateDraftField}
 					onSave={saveMember}
 					onEditRequest={switchModalToEdit}
-					onDelete={deleteMember}
+					onDelete={confirmDelete}
 				/>
+
+				{memberToDelete && (
+					<div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/60 px-4 py-6 backdrop-blur-sm">
+						<div className="w-full max-w-md border border-slate-200 bg-white p-6 shadow-xl dark:border-white/10 dark:bg-slate-950">
+							<h3 className="text-lg font-semibold text-slate-950 dark:text-slate-50">Excluir usuário</h3>
+							<p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
+								Tem certeza que deseja excluir o usuário #{memberToDelete}? Esta ação não pode ser desfeita.
+							</p>
+							<div className="mt-6 flex items-center justify-end gap-3">
+								<button
+									type="button"
+									onClick={cancelDelete}
+									disabled={isProcessing}
+									className="inline-flex h-10 items-center justify-center border border-slate-200 bg-white px-4 text-sm font-medium text-slate-700 transition hover:border-slate-400 hover:bg-slate-50 disabled:opacity-50 dark:border-white/10 dark:bg-slate-950 dark:text-slate-200 dark:hover:bg-white/5"
+								>
+									Cancelar
+								</button>
+								<button
+									type="button"
+									onClick={executeDelete}
+									disabled={isProcessing}
+									className="inline-flex h-10 items-center justify-center gap-2 border border-rose-300/60 bg-rose-50 px-4 text-sm font-medium text-rose-800 transition hover:bg-rose-100 disabled:opacity-50 dark:border-rose-300/30 dark:bg-rose-400/10 dark:text-rose-100 dark:hover:bg-rose-400/20"
+								>
+									{isProcessing ? (
+										<FontAwesomeIcon icon={faSpinner} className="h-4 w-4 animate-spin" />
+									) : (
+										<FontAwesomeIcon icon={faTrash} className="h-4 w-4" />
+									)}
+									Excluir
+								</button>
+							</div>
+						</div>
+					</div>
+				)}
 			</main>
 		</div>
 	);
